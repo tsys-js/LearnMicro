@@ -49,14 +49,14 @@ public class ParcelService {
         Parcel parcel = parcelRepository.findByNumber(number);
 
         if (userFrom != null && userTo != null && parcel == null) {
-            Parcel parcelForPersisting = Parcel.builder()
-                    .number(number)
-                    .weight(weight)
-                    .price(price)
-                    .status(Parcel.Status.fromCode(status))
-                    .userFrom(userFrom.getEmail())
-                    .userTo(userTo.getEmail())
-                    .build();
+            Parcel parcelForPersisting = new Parcel(
+                    number,
+                    Parcel.Status.fromCode(status),
+                    weight,
+                    price,
+                    userFrom.getEmail(),
+                    userTo.getEmail()
+            );
             Parcel persistedParcel = parcelRepository.save(parcelForPersisting);
             return convert(persistedParcel);
         } else {
@@ -80,24 +80,24 @@ public class ParcelService {
     }
 
     private Parcel parse(ParcelDTO parcelDTO) {
-        return Parcel.builder()
-                .number(parcelDTO.getNumber())
-                .price(parcelDTO.getPrice())
-                .weight(parcelDTO.getWeight())
-                .status(Parcel.Status.fromCode(parcelDTO.getStatus()))
-                .userFrom(postRestClient.findUserByEmail(parcelDTO.getUserFrom()).getEmail())
-                .userTo(postRestClient.findUserByEmail(parcelDTO.getUserTo()).getEmail())
-                .build();
+        return new Parcel(
+                parcelDTO.getNumber(),
+                Parcel.Status.fromCode(parcelDTO.getStatus()),
+                parcelDTO.getWeight(),
+                parcelDTO.getPrice(),
+                postRestClient.findUserByEmail(parcelDTO.getUserFrom()).getEmail(),
+                postRestClient.findUserByEmail(parcelDTO.getUserTo()).getEmail()
+        );
     }
 
     private ParcelDTO convert(Parcel parcel) {
-        return ParcelDTO.builder()
-                .number(parcel.getNumber())
-                .price(parcel.getPrice())
-                .weight(parcel.getWeight())
-                .status(parcel.getStatus().getCode())
-                .userFrom(parcel.getUserFrom())
-                .userTo(parcel.getUserTo())
-                .build();
+        return new ParcelDTO(
+                parcel.getNumber(),
+                parcel.getStatus().getCode(),
+                parcel.getWeight(),
+                parcel.getPrice(),
+                parcel.getUserFrom(),
+                parcel.getUserTo()
+        );
     }
 }

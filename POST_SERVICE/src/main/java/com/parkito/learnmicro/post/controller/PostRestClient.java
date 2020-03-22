@@ -2,7 +2,7 @@ package com.parkito.learnmicro.post.controller;
 
 import com.parkito.learnmicro.post.dto.DocumentDTO;
 import com.parkito.learnmicro.post.dto.UserDTO;
-import lombok.extern.log4j.Log4j2;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,7 +18,6 @@ import java.net.URI;
  * @author Artem Karnov @date 11/6/2017.
  * artem.karnov@t-systems.com
  */
-@Log4j2
 @Component
 public class PostRestClient {
     private final RestTemplate restTemplate;
@@ -26,6 +25,8 @@ public class PostRestClient {
     private final String apiUserServiceApiUrl;
     private final String findUserByEmailPath;
     private final String findDocumentBySerialAndNumber;
+
+    final static Logger log = Logger.getLogger(PostRestClient.class);
 
     @Autowired
     public PostRestClient(RestTemplate restTemplate,
@@ -42,7 +43,8 @@ public class PostRestClient {
 
 
     public UserDTO findUserByEmail(String email) {
-        log.info("findUserByEmail {}", email);
+        log.info(String.format("findUserByEmail %s", email));
+
         URI targetUrl = UriComponentsBuilder
                 .fromHttpUrl(apiUserServiceApiUrl)
                 .pathSegment(findUserByEmailPath)
@@ -53,13 +55,14 @@ public class PostRestClient {
                     new ParameterizedTypeReference<UserDTO>() {
                     }).getBody();
         } catch (Exception ex) {
-            log.error("Goes wrong during USER_SERVICE {} connection !!!", targetUrl, ex);
+            log.error(String.format("Goes wrong during USER_SERVICE %s connection !!!", targetUrl), ex);
             return null;
         }
     }
 
     public DocumentDTO findDocumentBySerialAndNumber(String serial, String number) {
-        log.info("findDocumentBySerialAndNumber {}, {}", serial, number);
+        log.info(String.format("findDocumentBySerialAndNumber %s, %s", serial, number));
+
         URI targetUrl = UriComponentsBuilder
                 .fromHttpUrl(apiDocumentServiceApiUrl)
                 .pathSegment(findDocumentBySerialAndNumber)
@@ -71,7 +74,7 @@ public class PostRestClient {
                     new ParameterizedTypeReference<DocumentDTO>() {
                     }).getBody();
         } catch (Exception ex) {
-            log.error("Goes wrong during DOCUMENT_SERVICE {} connection !!!", targetUrl, ex);
+            log.error(String.format("Goes wrong during DOCUMENT_SERVICE %s connection !!!", targetUrl), ex);
             return null;
         }
     }

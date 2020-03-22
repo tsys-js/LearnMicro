@@ -3,7 +3,7 @@ package com.parkito.learnmicro.post.controller;
 import com.parkito.learnmicro.post.dto.ParcelDTO;
 import com.parkito.learnmicro.post.entity.Parcel;
 import com.parkito.learnmicro.post.service.ParcelService;
-import lombok.extern.log4j.Log4j2;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,12 @@ import java.util.List;
  * @author Artem Karnov @date 11/6/2017.
  * artem.karnov@t-systems.com
  */
-@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class PostRestController {
     private final ParcelService parcelService;
+
+    final static Logger log = Logger.getLogger(PostRestController.class);
 
     @Autowired
     public PostRestController(ParcelService parcelService) {

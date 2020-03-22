@@ -1,11 +1,5 @@
 package com.parkito.learnmicro.post.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.experimental.Tolerate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +12,7 @@ import java.io.Serializable;
  * artem.karnov@t-systems.com
  */
 @Entity
-@Builder
-@Data
 public class Parcel implements Serializable {
-    @Tolerate
-    public Parcel() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -47,8 +36,6 @@ public class Parcel implements Serializable {
     @Column(nullable = false)
     private String userTo;
 
-    @Getter
-    @AllArgsConstructor
     public enum Status {
         DELIVERED("1"),
         IN_PROCESS("2"),
@@ -65,5 +52,81 @@ public class Parcel implements Serializable {
             }
             throw new IllegalArgumentException("No such value for id " + code);
         }
+
+        Status(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
+    }
+
+    public Parcel() {
+    }
+
+    public Parcel(long number, Status status, double weight, double price, String userFrom, String userTo) {
+        this.number = number;
+        this.status = status;
+        this.weight = weight;
+        this.price = price;
+        this.userFrom = userFrom;
+        this.userTo = userTo;
+    }
+
+    public long getParcelId() {
+        return parcelId;
+    }
+
+    public void setParcelId(long parcelId) {
+        this.parcelId = parcelId;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getUserFrom() {
+        return userFrom;
+    }
+
+    public void setUserFrom(String userFrom) {
+        this.userFrom = userFrom;
+    }
+
+    public String getUserTo() {
+        return userTo;
+    }
+
+    public void setUserTo(String userTo) {
+        this.userTo = userTo;
     }
 }
