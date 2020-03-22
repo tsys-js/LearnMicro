@@ -32,11 +32,11 @@ public class DocumentService {
         if (document != null || user == null) {
             return null;
         } else {
-            Document documentForPersisting = Document.builder()
-                    .serial(serial)
-                    .number(number)
-                    .userEmail(user.getEmail())
-                    .build();
+            Document documentForPersisting = new Document(
+                    serial,
+                    number,
+                    user.getEmail()
+            );
             documentForPersisting = documentRepository.save(documentForPersisting);
             return convert(documentForPersisting);
         }
@@ -47,11 +47,11 @@ public class DocumentService {
         if (document == null) {
             return null;
         } else {
-            return DocumentDTO.builder()
-                    .serial(document.getSerial())
-                    .number(document.getNumber())
-                    .email(document.getUserEmail())
-                    .build();
+            return new DocumentDTO(
+                    document.getSerial(),
+                    document.getNumber(),
+                    document.getUserEmail()
+            );
         }
     }
 
@@ -66,11 +66,11 @@ public class DocumentService {
 
     private DocumentDTO convert(Document document) {
         if (document != null) {
-            return DocumentDTO.builder()
-                    .number(document.getNumber())
-                    .serial(document.getSerial())
-                    .email(document.getUserEmail())
-                    .build();
+            return new DocumentDTO(
+                    document.getSerial(),
+                    document.getNumber(),
+                    document.getUserEmail()
+            );
         } else {
             return null;
         }

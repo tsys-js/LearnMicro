@@ -2,7 +2,7 @@ package com.parkito.learnmicro.documents.controller;
 
 import com.parkito.learnmicro.documents.dto.DocumentDTO;
 import com.parkito.learnmicro.documents.service.DocumentService;
-import lombok.extern.log4j.Log4j2;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,10 +19,12 @@ import java.util.List;
  * @author Artem Karnov @date 11/10/2017.
  * artem.karnov@t-systems.com
  */
-@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class RestDocumentController {
+
+    final static Logger log = Logger.getLogger(RestDocumentController.class);
+
     private final DocumentService documentService;
 
     @Autowired
